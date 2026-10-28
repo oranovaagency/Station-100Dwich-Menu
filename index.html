@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Station 100Dwich · La Carte</title>
+<meta name="description" content="La carte du restaurant pizzeria Station 100Dwich à Oran : pizzas, tacos, burgers, sandwichs, poutines, plats orientaux, boissons et desserts.">
+<meta name="theme-color" content="#0b0b0d">
+<meta property="og:title" content="Station 100Dwich · La Carte">
+<meta property="og:description" content="Pizzas, tacos, burgers, sandwichs, poutines et plats orientaux. Rond-point de la Wilaya, Oran.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+  /* Station 100Dwich : carte digitale ouverte depuis le QR code de la table.
+   * Look : noir charbon, jaune "burst" et rouge, pris du menu papier du restaurant. */
+  :root {
+    --k950: #060607; --k900: #0b0b0d; --k800: #141418; --k700: #1c1c22;
+    --cream: #f5f1e8; --muted: #b7b2a6; --yellow: #ffd23f; --yellow-2: #ffe27a; --red: #e63946;
+    --line: rgba(255,210,63,.28);
+    --display: "Bebas Neue", Impact, "Arial Narrow", sans-serif; --text: "Jost", system-ui, sans-serif;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  [dir="rtl"] { --display: "Cairo", sans-serif; --text: "Cairo", sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { background: var(--k900); color: var(--cream); font: 400 17px/1.5 var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font: inherit; color: inherit; background: none; border: 0; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+  .wrap { max-width: 620px; margin-inline: auto; padding-inline: 16px; }
+
+  /* Photo fixe et floutée derrière toute la carte */
+  .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--k950); }
+  .bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); filter: saturate(1.15); }
+  .bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,6,7,.45), rgba(6,6,7,.78) 40%, rgba(6,6,7,.9)); }
+  @media (prefers-reduced-motion: no-preference) { .bg img { animation: drift 40s ease-in-out infinite alternate; } }
+  @keyframes drift { from { transform: scale(1.08) translate(0,0); } to { transform: scale(1.16) translate(-2%, -2%); } }
+
+  /* En-tête */
+  header { position: relative; text-align: center; padding: 24px 0 26px; }
+  .lang { position: absolute; top: 16px; inset-inline-end: 16px; height: 38px; min-width: 54px; padding: 0 14px; border: 1px solid rgba(255,210,63,.6); border-radius: 999px; background: rgba(6,6,7,.55); font: 600 13px/1 var(--text); letter-spacing: .08em; backdrop-filter: blur(6px); transition: background .2s, color .2s; }
+  .lang:hover { background: var(--yellow); color: var(--k950); }
+  .dot { width: 64px; height: 64px; margin: 8px auto 0; border-radius: 50%; background: var(--k950); display: grid; place-items: center; box-shadow: 0 0 0 1px var(--yellow), 0 0 0 5px rgba(6,6,7,.7), 0 0 0 6px rgba(255,210,63,.35); font: 400 26px/1 var(--display); color: var(--yellow); letter-spacing: .02em; }
+  [dir="rtl"] .dot { font-size: 22px; }
+  .eyebrow { font: 500 11px/1 var(--text); letter-spacing: .34em; text-transform: uppercase; color: var(--yellow); margin-top: 18px; }
+  [dir="rtl"] .eyebrow { letter-spacing: 0; font-size: 15px; }
+  .name { display: block; font: 400 58px/.95 var(--display); letter-spacing: .04em; margin-top: 10px; }
+  [dir="rtl"] .name { font-size: 44px; line-height: 1.2; font-weight: 700; letter-spacing: 0; }
+  .title { display: block; font: italic 500 24px/1.1 var(--text); color: var(--yellow-2); margin-top: 6px; }
+  [dir="rtl"] .title { font-style: normal; }
+  .rule { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--yellow); max-width: 220px; margin: 14px auto 0; }
+  .rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: var(--yellow); opacity: .6; }
+  .rule svg { width: 16px; height: 16px; flex: none; }
+  .status { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 7px 14px; border-radius: 999px; background: rgba(6,6,7,.55); border: 1px solid rgba(255,255,255,.1); font: 500 13px/1 var(--text); color: var(--muted); }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 0 rgba(61,220,132,.6); }
+  .status.closed i { background: var(--red); box-shadow: none; }
+  @media (prefers-reduced-motion: no-preference) { .status:not(.closed) i { animation: pulse 2s infinite; } }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(61,220,132,.55); } 70% { box-shadow: 0 0 0 8px rgba(61,220,132,0); } 100% { box-shadow: 0 0 0 0 rgba(61,220,132,0); } }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+  .actions a { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 15px; border-radius: 999px; border: 1px solid rgba(255,210,63,.45); background: rgba(6,6,7,.5); font: 500 13px/1 var(--text); letter-spacing: .04em; transition: transform .15s var(--ease), background .2s, color .2s; }
+  .actions a svg { width: 16px; height: 16px; }
+  .actions a:active { transform: scale(.96); }
+  .actions a.call { background: var(--yellow); color: var(--k950); border-color: var(--yellow); font-weight: 600; }
+  .actions a.call:hover { background: var(--yellow-2); }
+  .actions a:not(.call):hover { background: rgba(255,210,63,.14); }
+
+  /* Recherche */
+  .search { position: relative; margin: 18px auto 0; max-width: 620px; padding-inline: 16px; }
+  .search svg { position: absolute; inset-inline-start: 30px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  .search input { width: 100%; height: 46px; padding-inline: 44px 44px; border-radius: 999px; background: rgba(20,20,24,.9); border: 1px solid rgba(255,255,255,.1); color: var(--cream); transition: border-color .2s; }
+  .search input::placeholder { color: var(--muted); }
+  .search input:focus { border-color: var(--yellow); outline: 0; }
+  .search button { position: absolute; inset-inline-end: 22px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border-radius: 50%; color: var(--muted); display: none; place-items: center; }
+  .search.has button { display: grid; }
+  .search button:hover { color: var(--cream); }
+  .count { max-width: 620px; margin: 8px auto 0; padding-inline: 20px; font-size: 13px; color: var(--muted); min-height: 20px; }
+
+  /* Barre des catégories */
+  .chips { position: sticky; top: 0; z-index: 20; margin-top: 12px; background: rgba(11,11,13,.92); backdrop-filter: blur(10px); border-block: 1px solid var(--line); box-shadow: 0 10px 20px -16px #000; }
+  .chips .row { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px; max-width: 620px; margin-inline: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .chips .row::-webkit-scrollbar { display: none; }
+  .chips a { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px 0 6px; border: 1px solid var(--line); border-radius: 999px; font: 500 12px/1 var(--text); letter-spacing: .1em; text-transform: uppercase; color: var(--cream); transition: background .25s, color .25s, border-color .25s, transform .15s var(--ease); }
+  [dir="rtl"] .chips a { letter-spacing: 0; font-size: 15px; padding: 0 6px 0 14px; }
+  .chips a:active { transform: scale(.96); }
+  .chips a img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+  .chips a.on { background: var(--yellow); color: var(--k950); border-color: var(--yellow); }
+
+  /* Catégorie */
+  .cat { padding-top: 26px; scroll-margin-top: 70px; }
+  .banner { position: relative; height: 200px; border-radius: 10px 10px 0 0; overflow: hidden; background: var(--k800); }
+  .banner img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 8s var(--ease); }
+  .cat.in .banner img { transform: scale(1); }
+  .banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,6,7,.05) 20%, rgba(6,6,7,.92)); }
+  .banner .t { position: absolute; z-index: 1; inset: auto 20px 16px; }
+  .banner .n { font: 400 18px/1 var(--display); color: var(--yellow); letter-spacing: .1em; }
+  .banner h2 { font: 400 40px/1 var(--display); letter-spacing: .03em; margin-top: 4px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+  [dir="rtl"] .banner h2 { font-size: 30px; font-weight: 700; line-height: 1.35; letter-spacing: 0; }
+  .banner p { color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .panel { background: rgba(11,11,13,.9); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 10px 10px; padding: 6px 18px 14px; }
+  .sub-h { display: flex; align-items: center; gap: 10px; margin: 16px 0 4px; font: 600 11px/1 var(--text); letter-spacing: .3em; text-transform: uppercase; color: var(--yellow); }
+  .sub-h::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  [dir="rtl"] .sub-h { letter-spacing: 0; font-size: 14px; }
+  .sizes { display: flex; justify-content: flex-end; gap: 6px; margin: 10px 0 2px; }
+  .sizes span { min-width: 54px; text-align: center; font: 600 10px/1 var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  [dir="rtl"] .sizes span { letter-spacing: 0; font-size: 12px; }
+  .items { list-style: none; }
+  .items li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .items li:last-child { border-bottom: 0; }
+  .tx { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+  .tx > span:first-child { display: flex; flex-direction: column; min-width: 0; }
+  .nm { font-size: 18px; font-weight: 500; line-height: 1.25; }
+  .ds { font-size: 13.5px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .badge { display: inline-block; width: max-content; margin-top: 5px; padding: 3px 8px; border-radius: 999px; background: var(--red); color: #fff; font: 600 10px/1 var(--text); letter-spacing: .12em; text-transform: uppercase; }
+  [dir="rtl"] .badge { letter-spacing: 0; font-size: 12px; }
+  .lead { flex: 1; min-width: 14px; border-bottom: 2px dotted rgba(255,210,63,.45); transform: translateY(-5px); }
+  .pr { white-space: nowrap; color: var(--yellow-2); font-size: 16px; }
+  .pr b { font: 400 22px/1 var(--display); letter-spacing: .03em; color: var(--yellow); }
+  [dir="rtl"] .pr b { font: 700 18px/1 var(--text); }
+  .multi { display: flex; gap: 6px; }
+  .multi .pr { min-width: 54px; text-align: center; font-size: 13px; }
+  .multi .pr b { font-size: 20px; }
+  /* Petits écrans : les lignes à plusieurs prix passent sur deux lignes */
+  @media (max-width: 440px) {
+    .tx:has(.multi) { flex-wrap: wrap; }
+    .tx:has(.multi) .lead { display: none; }
+    .tx .multi { width: 100%; justify-content: flex-end; margin-top: 6px; }
+    .multi .pr, .sizes span { min-width: 50px; }
+  }
+  .note { margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,.1); font-size: 13.5px; color: var(--muted); }
+  .empty { display: none; text-align: center; color: var(--muted); padding: 60px 16px; }
+  .empty.show { display: block; }
+
+  /* Apparition au défilement (uniquement avec JS et si le mouvement est accepté) */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .cat { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .js .cat.in { opacity: 1; transform: none; }
+    .js .items li { opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .5s var(--ease); transition-delay: calc(var(--i, 0) * 45ms); }
+    .js .cat.in .items li { opacity: 1; transform: none; }
+    .js header > *, .js .chips { animation: rise .8s var(--ease) both; }
+    .js header > :nth-child(2) { animation-delay: .05s; } .js header > :nth-child(3) { animation-delay: .1s; } .js header > :nth-child(4) { animation-delay: .15s; }
+    .js header > :nth-child(5) { animation-delay: .2s; } .js header > :nth-child(6) { animation-delay: .25s; } .js header > :nth-child(7) { animation-delay: .3s; }
+    .js .chips { animation-delay: .35s; }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* Pied de page */
+  footer { text-align: center; padding: 40px 0 120px; color: var(--muted); font-size: 15px; }
+  footer h3 { font: 400 30px/1 var(--display); color: var(--cream); letter-spacing: .04em; margin-bottom: 12px; }
+  [dir="rtl"] footer h3 { font-weight: 700; letter-spacing: 0; }
+  footer .addr { color: var(--cream); }
+  footer .tel { margin-top: 2px; }
+  footer .hours { margin: 10px auto 0; display: grid; grid-template-columns: max-content max-content; gap: 4px 16px; justify-content: center; }
+  footer .hours b { font-weight: 500; color: var(--cream); }
+  footer .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+  footer .links a { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 15px; border-radius: 999px; border: 1px solid rgba(255,210,63,.45); background: rgba(6,6,7,.5); color: var(--cream); font: 500 13px/1 var(--text); letter-spacing: .04em; transition: background .2s, transform .15s var(--ease); }
+  footer .links a svg { width: 16px; height: 16px; }
+  footer .links a:hover { background: rgba(255,210,63,.14); }
+  footer .links a:active { transform: scale(.96); }
+  footer .note { border: 0; padding: 0; margin-top: 22px; font-size: 13px; }
+  .credit { margin: 28px auto 0; display: inline-flex; align-items: center; gap: 8px; color: #8a8780; font: 500 10px/1 var(--text); letter-spacing: .22em; text-transform: uppercase; }
+  .credit img { height: 15px; width: auto; }
+  .credit a { color: inherit; }
+
+  /* Retour en haut */
+  .top { position: fixed; inset-inline-end: 16px; bottom: 18px; z-index: 30; width: 44px; height: 44px; border-radius: 50%; background: var(--yellow); color: var(--k950); display: grid; place-items: center; box-shadow: 0 8px 24px -8px rgba(0,0,0,.8); opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .3s, transform .3s var(--ease); }
+  .top.show { opacity: 1; transform: none; pointer-events: auto; }
+  .top svg { width: 20px; height: 20px; }
+</style>
+</head>
+<body>
+<div class="bg"><img src="img/bg-blur.jpg" alt=""></div>
+
+<header class="wrap">
+  <button class="lang" id="lang" type="button">عربي</button>
+  <div class="dot" aria-hidden="true">100</div>
+  <p class="eyebrow" data-i="eyebrow">Restaurant · Pizzeria · Oran</p>
+  <h1><span class="name">Station 100Dwich</span><span class="title" data-i="title">La Carte</span></h1>
+  <div class="rule" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2.2 5.8L16 8l-5.8 2.2L8 16l-2.2-5.8L0 8l5.8-2.2z"/></svg></div>
+  <p class="status" id="status"><i aria-hidden="true"></i><span id="status-t" data-i="hoursShort">Tous les jours 11h – 23h · vendredi 18h – 22h</span></p>
+</header>
+
+<nav class="chips" aria-label="Catégories"><div class="row" id="chips"></div></nav>
+
+<main class="menu wrap" id="menu"></main>
+
+<footer class="wrap">
+  <h3 data-i="find">Nous trouver</h3>
+  <p class="addr" data-i="addr">Rond-point de la Wilaya, Oran</p>
+  <p class="tel"><a href="tel:+213541133364" dir="ltr">0541 13 33 64</a></p>
+  <div class="hours"><span data-i="d1">Samedi à jeudi</span><b>11h00 – 23h00</b><span data-i="d2">Vendredi</span><b>18h00 – 22h00</b></div>
+  <div class="links">
+    <a href="tel:+213541133364"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span data-i="call">Appeler</span></a>
+    <a href="https://maps.app.goo.gl/zK57NHA8u86s5paX7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span data-i="map">Itinéraire</span></a>
+    <a href="https://www.instagram.com/station_100dwich/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+    <a href="https://www.facebook.com/p/pizzeria-station-100dwich-61582208732117/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h2.5V4.5H14c-2.5 0-4 1.6-4 4.2V11H7.5v3.3H10V21h3.4v-6.7h2.4l.5-3.3h-2.9V9.1c0-.7.3-1.1 1.1-1.1z"/></svg>Facebook</a>
+    <a href="https://www.tiktok.com/@foodstationby100dwich" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.19 1.11 2.87 1.62 4.51 1.8v4.03c-1.53-.05-3.08-.37-4.47-1.03-.6-.27-1.17-.63-1.72-.99-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</a>
+  </div>
+  <p class="note" data-i="note">Prix en dinars algériens (DA), susceptibles de changer.</p>
+  <div class="credit" dir="ltr"><span data-i="credit">Designed by</span><img src="img/oranova-logo-light.png" alt="Oranova" width="2000" height="426"></div>
+</footer>
+
+<a class="top" id="top" href="#" aria-label="Retour en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
+
+<script>
+// ----- La carte. Un plat = [nom FR, nom AR, prix (nombre ou liste), desc FR, desc AR, badge?]
+// Les tailles d'un groupe (sizes) donnent l'ordre des prix en liste.
+const MENU = [
+  { id: "entrees-salades", img: "entrees-salades", fr: "Entrées & salades", ar: "مقبلات وسلطات", subFr: "Pour commencer, frais et léger", subAr: "للبداية، طازج وخفيف",
+    groups: [
+      { fr: "Entrées", ar: "مقبلات", items: [["Harira maghrabia + bourek", "حريرة مغربية + بوراك", 400]] },
+      { fr: "Salades", ar: "سلطات", items: [
+        ["Salade de riz", "سلطة الأرز", 300], ["Salade de pâtes", "سلطة المعكرونة", 300], ["Salade variée", "سلطة متنوعة", 350],
+        ["Salade du chef", "سلطة الشيف", 700], ["Salade César", "سلطة سيزار", 700]] } ] },
+  { id: "omelettes-gratins", img: "omelettes-gratins", fr: "Omelettes & gratins", ar: "أومليت وغراتان", subFr: "Au four, bien gratinés", subAr: "في الفرن، محمّرة جيداً",
+    groups: [
+      { fr: "Omelettes", ar: "أومليت", items: [["Omelette au poulet", "أومليت بالدجاج", 500], ["Omelette fruits de mer", "أومليت بفواكه البحر", 700], ["Omelette 4 fromages", "أومليت 4 أجبان", 700]] },
+      { fr: "Gratins", ar: "غراتان", items: [
+        ["Gratin viande hachée", "غراتان باللحم المفروم", 500, "Sauce béchamel, viande hachée, gouda", "صلصة بشاميل، لحم مفروم، غودا"],
+        ["Gratin poulet", "غراتان بالدجاج", 500, "Sauce béchamel, poulet, gouda", "صلصة بشاميل، دجاج، غودا"],
+        ["Gratin 4 fromages", "غراتان 4 أجبان", 600, "Sauce béchamel, fromage rouge, camembert, fondu, gouda", "صلصة بشاميل، جبن أحمر، كامومبير، جبن ذائب، غودا"],
+        ["Gratin fruits de mer", "غراتان فواكه البحر", 800, "Sauce béchamel, fruits de mer, gouda", "صلصة بشاميل، فواكه البحر، غودا"]] } ] },
+  { id: "sandwichs", img: "sandwichs", fr: "Sandwichs", ar: "سندويتشات", subFr: "Frites et boisson comprises", subAr: "مع البطاطا والمشروب",
+    groups: [ { items: [
+      ["Sandwich poulet haché", "سندويتش دجاج مفروم", 400, "Poulet haché, œuf, salade, frites, fromage", "دجاج مفروم، بيض، سلطة، بطاطا، جبن"],
+      ["Spécial viande hachée", "سبيسيال لحم مفروم", 450, "Viande hachée, œuf, salade, frites, fromage", "لحم مفروم، بيض، سلطة، بطاطا، جبن"],
+      ["Sandwich chawarma", "سندويتش شاورما", 500, "Chawarma, salade, sauce à l'ail, frites", "شاورما، سلطة، صلصة الثوم، بطاطا"],
+      ["Sandwich escalope marinée", "سندويتش إسكالوب متبل", 550, "Escalope, salade, frites, fromage", "إسكالوب، سلطة، بطاطا، جبن"],
+      ["Sandwich kebda", "سندويتش كبدة", 550, "Kebda de poulet, salade, frites, sauce, fromage", "كبدة دجاج، سلطة، بطاطا، صلصة، جبن"],
+      ["Sandwich panini grec", "بانيني غريك", 650, "2 viandes hachées, fromage, slice, salade", "لحم مفروم مزدوج، جبن، سلايس، سلطة"],
+      ["Sandwich escalope gouda", "سندويتش إسكالوب غودا", 700, "Escalope, gouda", "إسكالوب، غودا"],
+      ["Sandwich merguez fromage rouge", "سندويتش مرقاز بالجبن الأحمر", 700, "Merguez, fromage rouge", "مرقاز، جبن أحمر"],
+      ["Sandwich escalope gruyère", "سندويتش إسكالوب غرويار", 750, "Escalope, gruyère", "إسكالوب، غرويار"],
+      ["Sandwich 4 fromages", "سندويتش 4 أجبان", 750, "Gouda, camembert, fromage rouge, fondu", "غودا، كامومبير، جبن أحمر، جبن ذائب"],
+      ["Sandwich escalope crevettes gouda", "سندويتش إسكالوب قمرون غودا", 950, "Escalope marinée, crevettes, gouda", "إسكالوب متبل، قمرون، غودا"]] } ] },
+  { id: "burgers", img: "burgers", fr: "Burgers", ar: "برغر", subFr: "Formule : burger, frites et boisson", subAr: "فورمول: برغر، بطاطا ومشروب",
+    groups: [
+      { sizes: ["Seul", "Formule", "Double", "Triple"], sizesAr: ["وحده", "فورمول", "دوبل", "تريبل"], items: [
+        ["Classic américain", "كلاسيك أمريكي", [350, 500, 500, 700], "Salade, tomate, fromage, coleslaw, viande hachée", "سلطة، طماطم، جبن، كولسلو، لحم مفروم"],
+        ["Fumé", "فومي", [550, 700, 750, 850], "Salade, tomate, cheddar, rôti fumé, oignon caramélisé, viande hachée", "سلطة، طماطم، شيدر، روتي مدخن، بصل مكرمل، لحم مفروم"],
+        ["Suisse", "سويس", [650, 800, 850, 1000], "Salade, tomate, double gruyère, sauce gruyère, oignon caramélisé, œuf", "سلطة، طماطم، غرويار مزدوج، صلصة غرويار، بصل مكرمل، بيض"],
+        ["Finger", "فينغر", [500, 650, 700, 900], "Salade, tomate, gouda, escalope panée", "سلطة، طماطم، غودا، إسكالوب مقلي"],
+        ["Camembert", "كامومبير", [500, 750, 800, 1000], "Salade, tomate, camembert, viande hachée, oignon caramélisé", "سلطة، طماطم، كامومبير، لحم مفروم، بصل مكرمل"]] },
+      { fr: "Enfants", ar: "للأطفال", items: [["Samurai pack enfants", "باك ساموراي للأطفال", 750, "Burger, frites, dessert, boisson et un cadeau", "برغر، بطاطا، حلوى، مشروب وهدية"]] } ],
+    noteFr: "La viande hachée peut être remplacée par de l'escalope ou du poulet haché.", noteAr: "يمكن استبدال اللحم المفروم بالإسكالوب أو الدجاج المفروم." },
+  { id: "tacos", img: "tacos", fr: "Tacos", ar: "طاكوس", subFr: "Formule : tacos, frites et boisson", subAr: "فورمول: طاكوس، بطاطا ومشروب",
+    groups: [ { sizes: ["Seul", "Formule"], sizesAr: ["وحده", "فورمول"], items: [
+      ["Tacos poulet haché", "طاكوس دجاج مفروم", [500, 650]], ["Tacos spécial viande hachée", "طاكوس لحم مفروم", [600, 750]], ["Tacos kebab", "طاكوس كباب", [650, 800]],
+      ["Tacos poulet sauce gruyère", "طاكوس دجاج بصلصة غرويار", [650, 800]], ["Tacos steak haché", "طاكوس ستيك مفروم", [700, 850]],
+      ["Tacos finger", "طاكوس فينغر", [700, 850], "Escalope panée", "إسكالوب مقلي"], ["Tacos Fumato", "طاكوس فوماتو", [750, 900], "Rôti fumé et escalope", "روتي مدخن وإسكالوب"],
+      ["Tacos mixte", "طاكوس مختلط", [750, 900], "Viande hachée et poulet", "لحم مفروم ودجاج"]] } ],
+    noteFr: "Supplément gratiné : 150 DA · Supplément sans frites : 100 DA.", noteAr: "إضافة غراتان: 150 دج · بدون بطاطا: 100 دج." },
+  { id: "poutines", img: "poutines", fr: "Poutines", ar: "بوتين", subFr: "Frites, sauce gruyère et plus encore", subAr: "بطاطا، صلصة غرويار وأكثر",
+    groups: [ { items: [
+      ["Poutine poulet pané", "بوتين دجاج مقلي", 800, "Escalope panée, frites, sauce gruyère, gouda", "إسكالوب مقلي، بطاطا، صلصة غرويار، غودا"],
+      ["Poutine Taïti", "بوتين تايتي", 850, "Escalope panée, frites, sauce gruyère, sauce taïti, oignon caramélisé, gruyère", "إسكالوب مقلي، بطاطا، صلصة غرويار، صلصة تايتي، بصل مكرمل، غرويار"],
+      ["Poutine chilien hot", "بوتين شيلي حار", 850, "Escalope panée, frites, sauce samouraï, sauce gruyère, poivron, maïs, gouda", "إسكالوب مقلي، بطاطا، صلصة ساموراي، صلصة غرويار، فلفل، ذرة، غودا"],
+      ["Poutine american", "بوتين أمريكان", 850, "Merguez, frites, sauce gruyère, sauce taïti, ketchup hot-dog, gruyère", "مرقاز، بطاطا، صلصة غرويار، صلصة تايتي، كاتشب هوت دوغ، غرويار"],
+      ["Poutine viande", "بوتين باللحم", 900, "Viande hachée, frites, sauce gruyère, gruyère", "لحم مفروم، بطاطا، صلصة غرويار، غرويار"],
+      ["Poutine escalope 3 fromages", "بوتين إسكالوب 3 أجبان", 1000, "Escalope marinée, frites, sauce gruyère, gouda, mozzarella, camembert", "إسكالوب متبل، بطاطا، صلصة غرويار، غودا، موزاريلا، كامومبير"],
+      ["Poutine crevettes", "بوتين بالقمرون", 1400, "Escalope panée, crevettes, frites, sauce gruyère, gruyère, crevette royale", "إسكالوب مقلي، قمرون، بطاطا، صلصة غرويار، غرويار، قمرون ملكي"]] } ],
+    noteFr: "Les frites peuvent être remplacées par du riz.", noteAr: "يمكن استبدال البطاطا بالأرز." },
+  { id: "pizzas", img: "pizzas", fr: "Pizzas", ar: "بيتزا", subFr: "Trois tailles : M, XL et XXL", subAr: "ثلاثة أحجام: M و XL و XXL",
+    groups: [
+      { fr: "Classiques", ar: "كلاسيك", sizes: ["M", "XL", "XXL"], sizesAr: ["M", "XL", "XXL"], items: [
+        ["Marguerite", "مارغريتا", [500, 1200, 1500], "Tomate, fromage, olives", "طماطم، جبن، زيتون"],
+        ["Forestière", "فوريستيير", [650, 1300, 1900], "Tomate, fromage, champignons, olives", "طماطم، جبن، فطر، زيتون"],
+        ["Végétarienne", "نباتية", [650, 1300, 1900], "Tomate, fromage, oignon, poivron, olives", "طماطم، جبن، بصل، فلفل، زيتون"],
+        ["Napolitaine", "نابوليتان", [650, 1400, 2000], "Tomate, fromage, poulet haché, olives", "طماطم، جبن، دجاج مفروم، زيتون"],
+        ["Régina", "ريجينا", [800, 1700, 2200], "Tomate, fromage, viande hachée, olives", "طماطم، جبن، لحم مفروم، زيتون"],
+        ["Au thon", "بالتونة", [800, 1700, 2200], "Tomate, fromage, thon, olives", "طماطم، جبن، تونة، زيتون"],
+        ["Fermière", "فيرميير", [800, 1700, 2200], "Tomate, fromage, poulet, champignons, olives", "طماطم، جبن، دجاج، فطر، زيتون"],
+        ["Mexicaine", "مكسيكية", [850, 1800, 2500], "Tomate, fromage, kebab, champignons, olives", "طماطم، جبن، كباب، فطر، زيتون"],
+        ["Orientale", "شرقية", [850, 1700, 2300], "Tomate, fromage, merguez, champignons, olives", "طماطم، جبن، مرقاز، فطر، زيتون"],
+        ["Coq poulet", "كوك بولي", [850, 1700, 2300], "Sauce blanche, fromage, poulet, champignons, olives", "صلصة بيضاء، جبن، دجاج، فطر، زيتون"],
+        ["4 saisons", "4 فصول", [900, 1900, 2700], "Tomate, fromage, viande hachée, champignons, olives", "طماطم، جبن، لحم مفروم، فطر، زيتون"],
+        ["Quatre fromages", "4 أجبان", [900, 2000, 2900], "Tomate, fromage fondu, camembert, gouda, fromage rouge, olives", "طماطم، جبن ذائب، كامومبير، غودا، جبن أحمر، زيتون"],
+        ["Rôti fumé", "روتي مدخن", [900, 2000, 2900], "Sauce blanche, gruyère, poulet haché, rôti fumé, olives", "صلصة بيضاء، غرويار، دجاج مفروم، روتي مدخن، زيتون"],
+        ["Rio", "ريو", [1000, 2100, 2900], "Tomate, fromage, viande hachée, poulet, champignons, olives", "طماطم، جبن، لحم مفروم، دجاج، فطر، زيتون"],
+        ["Bingo", "بينغو", [1000, 2100, 2900], "Composez votre pizza : 4 ingrédients au choix (sans fruits de mer)", "ركّب بيتزتك: 4 مكونات حسب اختيارك (بدون فواكه البحر)", "choice"],
+        ["Italienne", "إيطالية", [1000, 2100, 2900], "Tomate, fromage, merguez, saucisson fumé, camembert, olives", "طماطم، جبن، مرقاز، سجق مدخن، كامومبير، زيتون"],
+        ["Australienne", "أسترالية", [1000, 2100, 2900], "Tomate, fromage, viande hachée, champignons, thon, olives", "طماطم، جبن، لحم مفروم، فطر، تونة، زيتون"],
+        ["Maison", "بيتزا الدار", [1500, 3200, 4500], "Tomate, fromage, fruits de mer, thon, anchois, champignons, bordure fromage, olives", "طماطم، جبن، فواكه البحر، تونة، أنشوجة، فطر، حافة بالجبن، زيتون"],
+        ["Festivale", "فيستيفال", [1600, 3500, 4500], "Tomate, fromage, olives vertes, viande hachée, poulet, champignons, thon, câpres, bordure fromage", "طماطم، جبن، زيتون أخضر، لحم مفروم، دجاج، فطر، تونة، كبار، حافة بالجبن"],
+        ["Fruits de mer", "فواكه البحر", 1600, "Tomate, fromage, calamar, crevettes, olives, 1 crevette royale. Taille M uniquement", "طماطم، جبن، كالامار، قمرون، زيتون، قمرون ملكي. حجم M فقط"]] },
+      { fr: "Spéciales", ar: "سبيسيال", sizes: ["M", "XL", "XXL"], sizesAr: ["M", "XL", "XXL"], items: [
+        ["Pepperoni", "بيبروني", [850, 1800, 2500], "Sauce tomate, fromage, pepperoni, olives", "صلصة طماطم، جبن، بيبروني، زيتون"],
+        ["Roma", "روما", [900, 1900, 2800], "Sauce tomate, fromage, anchois, câpres, olives", "صلصة طماطم، جبن، أنشوجة، كبار، زيتون"],
+        ["Buffalo", "بوفالو", [900, 1800, 2700], "Sauce piquante, fromage, viande hachée, oignons, rôti fumé, olives", "صلصة حارة، جبن، لحم مفروم، بصل، روتي مدخن، زيتون"],
+        ["Chilienne", "شيلية", [900, 1900, 2700], "Sauce piquante, fromage, kebab, champignons, oignons, piment vert, olives", "صلصة حارة، جبن، كباب، فطر، بصل، فلفل أخضر، زيتون"],
+        ["Jardinière", "جاردينيير", [950, 1900, 2700], "Sauce tomate, fromage, viande hachée, poivron, champignons, olives", "صلصة طماطم، جبن، لحم مفروم، فلفل، فطر، زيتون"],
+        ["Indienne", "هندية", [950, 2000, 3000], "Sauce blanche, fromage, escalope, gruyère, œuf, piment vert, olives", "صلصة بيضاء، جبن، إسكالوب، غرويار، بيض، فلفل أخضر، زيتون"],
+        ["L'Oranaise", "الوهرانية", [1000, 2200, 3200], "Sauce tomate, fromage, viande hachée, merguez, champignons, rôti fumé, maïs, olives", "صلصة طماطم، جبن، لحم مفروم، مرقاز، فطر، روتي مدخن، ذرة، زيتون", "local"],
+        ["Niçoise", "نيسواز", [1000, 2200, 3300], "Sauce blanche, fromage, thon, mozzarella, champignons, roquefort, olives", "صلصة بيضاء، جبن، تونة، موزاريلا، فطر، روكفور، زيتون"],
+        ["Polonaise", "بولونيز", [1100, 2300, 3500], "Sauce blanche, gruyère, fromage, thon, viande hachée, camembert, rôti fumé, olives", "صلصة بيضاء، غرويار، جبن، تونة، لحم مفروم، كامومبير، روتي مدخن، زيتون"],
+        ["5 fromages", "5 أجبان", [1200, 2500, 3200], "Sauce blanche, gruyère, fromage rouge, roquefort, gouda, camembert", "صلصة بيضاء، غرويار، جبن أحمر، روكفور، غودا، كامومبير"],
+        ["Crevettes", "بالقمرون", [1500, 2700, 3900], "Sauce blanche, fromage, crevettes, gruyère, olives, 1 crevette royale", "صلصة بيضاء، جبن، قمرون، غرويار، زيتون، قمرون ملكي"],
+        ["Titanic turc", "تيتانيك تركي", [2000, 3500, 4800], "Fruits de mer : sauce tomate, fromage, calamar, crevettes, 2 crevettes royales, olives", "فواكه البحر: صلصة طماطم، جبن، كالامار، قمرون، قمرونان ملكيان، زيتون"]] } ],
+    noteFr: "Suppléments : œuf 50 DA · câpres 150 DA · anchois 200 DA · champignons 200 DA · bordure fromage 200 DA · pizza soufflée 200 DA · pizza turque 200 DA · thon 250 DA · viande hachée 250 DA · gouda 300 DA · gruyère 300 DA.",
+    noteAr: "إضافات: بيض 50 دج · كبار 150 دج · أنشوجة 200 دج · فطر 200 دج · حافة بالجبن 200 دج · بيتزا منفوخة 200 دج · بيتزا تركية 200 دج · تونة 250 دج · لحم مفروم 250 دج · غودا 300 دج · غرويار 300 دج." },
+  { id: "plats-orientaux", img: "plats-orientaux", fr: "Plats orientaux", ar: "أطباق شرقية", subFr: "Grillades, riz, salade et pain maison", subAr: "مشاوي، أرز، سلطة وخبز الدار",
+    groups: [ { items: [
+      ["Plat chawarma", "طبق شاورما", 1000, "Chawarma, salade variée, riz, frites, pain maison", "شاورما، سلطة متنوعة، أرز، بطاطا، خبز الدار"],
+      ["Plat kebda poulet", "طبق كبدة دجاج", 1000, "Foie de poulet, salade variée, riz, frites, pain maison", "كبدة دجاج، سلطة متنوعة، أرز، بطاطا، خبز الدار"],
+      ["Plat crispy (kintaki)", "طبق كريسبي (كنتاكي)", 1000, "3 kintaki, salade variée, riz, frites, pain maison", "3 كنتاكي، سلطة متنوعة، أرز، بطاطا، خبز الدار"],
+      ["Plat chich taouk", "طبق شيش طاووق", 1000, "2 brochettes chich taouk, salade variée, riz, frites, pain maison", "سيخان شيش طاووق، سلطة متنوعة، أرز، بطاطا، خبز الدار"],
+      ["Plat chawarma extra", "طبق شاورما إكسترا", 1000, "Chawarma piquante, salade variée, riz, frites", "شاورما حارة، سلطة متنوعة، أرز، بطاطا"],
+      ["Plat chawarma arabi", "طبق شاورما عربي", 1200, "2 chawarma sandwich découpés, salade, riz, frites", "سندويتشا شاورما مقطّعان، سلطة، أرز، بطاطا"],
+      ["Plat adana kebab", "طبق أضنة كباب", 1200, "2 brochettes de viande hachée, salade variée, riz, frites", "سيخان لحم مفروم، سلطة متنوعة، أرز، بطاطا"],
+      ["Plat mix 3 brochettes", "طبق ميكس 3 أسياخ", 1400, "1 adana kebab, 1 poulet haché, 1 chich taouk, salade, riz, frites, pain maison", "أضنة كباب، دجاج مفروم، شيش طاووق، سلطة، أرز، بطاطا، خبز الدار"],
+      ["Plat mix 6 brochettes", "طبق ميكس 6 أسياخ", 2500, "2 adana kebab, 2 poulet haché, 2 chich taouk, salade, riz, frites, pain maison", "2 أضنة كباب، 2 دجاج مفروم، 2 شيش طاووق، سلطة، أرز، بطاطا، خبز الدار"]] } ] },
+  { id: "boissons-desserts", img: "boissons-desserts", fr: "Boissons & desserts", ar: "مشروبات وحلويات", subFr: "Pour accompagner et finir en douceur", subAr: "للمرافقة ولختام حلو",
+    groups: [
+      { fr: "Boissons", ar: "مشروبات", items: [
+        ["Eau minérale", "ماء معدني", 50, "Petite", "صغير"], ["Eau minérale", "ماء معدني", 100, "Grande", "كبير"],
+        ["Coca-Cola canette", "كوكا كولا علبة", 100], ["Coca-Cola 1 L", "كوكا كولا 1 ل", 200],
+        ["Jus", "عصير", 100, "Petit", "صغير"], ["Jus", "عصير", 200, "Grand", "كبير"], ["Jus pressé", "عصير طبيعي", 350], ["Café Nespresso", "قهوة نسبريسو", 200]] },
+      { fr: "Desserts", ar: "حلويات", items: [
+        ["Flan caramel", "فلان كراميل", 350], ["Mousse au chocolat", "موس شوكولاتة", 350], ["Tiramisu", "تيراميسو", 350], ["Salade de fruits", "سلطة فواكه", 600]] } ] }
+];
+
+const T = {
+  fr: { eyebrow: "Restaurant · Pizzeria · Oran", title: "La Carte", call: "Appeler", map: "Itinéraire", find: "Nous trouver", addr: "Rond-point de la Wilaya, Oran",
+        d1: "Samedi à jeudi", d2: "Vendredi", note: "Prix en dinars algériens (DA), susceptibles de changer.", credit: "Designed by",
+        search: "Rechercher un plat…", empty: "Aucun plat ne correspond à votre recherche.", cur: "DA", langBtn: "عربي", langLabel: "التبديل إلى العربية",
+        hoursShort: "Tous les jours 11h – 23h · vendredi 18h – 22h", open: "Ouvert · ferme à", closed: "Fermé · ouvre à", results: n => n + (n > 1 ? " plats trouvés" : " plat trouvé"),
+        badges: { pack: "Enfants", choice: "Au choix", local: "Spécialité" } },
+  ar: { eyebrow: "مطعم · بيتزيريا · وهران", title: "قائمة الطعام", call: "اتصل", map: "الاتجاهات", find: "أين تجدنا", addr: "دوار الولاية، وهران",
+        d1: "السبت إلى الخميس", d2: "الجمعة", note: "الأسعار بالدينار الجزائري وقد تتغير.", credit: "Designed by",
+        search: "ابحث عن طبق…", empty: "لا يوجد طبق يطابق بحثك.", cur: "دج", langBtn: "FR", langLabel: "Passer en français",
+        hoursShort: "كل يوم 11:00 – 23:00 · الجمعة 18:00 – 22:00", open: "مفتوح · يغلق على", closed: "مغلق · يفتح على", results: n => n + " نتيجة",
+        badges: { pack: "للأطفال", choice: "حسب اختيارك", local: "تخصصنا" } }
+};
+
+let lang = "fr";
+try { if (localStorage.getItem("s100-lang") === "ar") lang = "ar"; } catch (e) {}
+const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const chipsRow = document.getElementById("chips");
+const menuEl = document.getElementById("menu");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const fold = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+function price(p, t) { return `<span class="pr" dir="ltr"><b>${fmt(p)}</b> ${t.cur}</span>`; }
+
+function render() {
+  const t = T[lang];
+  document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-i]").forEach(el => { const v = t[el.dataset.i]; if (typeof v === "string") el.textContent = v; });
+  const b = document.getElementById("lang"); b.textContent = t.langBtn; b.setAttribute("aria-label", t.langLabel);
+
+  chipsRow.innerHTML = MENU.map(c => `<a href="#${c.id}" data-c="${c.id}"><img src="img/${c.img}-thumb.jpg" alt="">${c[lang]}</a>`).join("");
+
+  menuEl.innerHTML = MENU.map((c, i) => `
+    <section class="cat" id="${c.id}">
+      <div class="banner"><img src="img/${c.img}.jpg" alt="" ${i ? 'loading="lazy"' : 'fetchpriority="high"'}>
+        <div class="t"><span class="n" dir="ltr">${roman[i]}.</span><h2>${c[lang]}</h2><p>${lang === "ar" ? c.subAr : c.subFr}</p></div></div>
+      <div class="panel">${c.groups.map(g => {
+        const sizes = lang === "ar" ? g.sizesAr : g.sizes;
+        return `${g[lang] ? `<p class="sub-h">${g[lang]}</p>` : ""}${sizes ? `<div class="sizes" dir="ltr">${sizes.map(s => `<span>${s}</span>`).join("")}</div>` : ""}<ul class="items">${g.items.map(([nfr, nar, p, dfr, dar, badge], j) => {
+          const n = lang === "ar" ? nar : nfr, d = lang === "ar" ? dar : dfr;
+          const multi = Array.isArray(p);
+          return `<li style="--i:${Math.min(j, 6)}" data-s="${fold(nfr + " " + (dfr || "") + " " + nar + " " + (dar || "") + " " + c.fr + " " + c.ar)}">
+            <div class="tx"><span><span class="nm">${n}</span>${badge ? `<span class="badge">${t.badges[badge]}</span>` : ""}${d ? `<span class="ds">${d}</span>` : ""}</span>
+            ${multi ? `<span class="lead" aria-hidden="true"></span><span class="multi" dir="ltr">${p.map((v, k) => `<span class="pr"><b>${fmt(v)}</b><span class="sr" hidden>${sizes[k]}</span></span>`).join("")}</span>`
+                    : `<span class="lead" aria-hidden="true"></span>${price(p, t)}`}</div></li>`;
+        }).join("")}</ul>`;
+      }).join("")}${c.noteFr ? `<p class="note">${lang === "ar" ? c.noteAr : c.noteFr}</p>` : ""}</div>
+    </section>`).join("");
+
+  current = ""; onScroll(); observe(); status();
+}
+
+// Les catégories et plats apparaissent en entrant dans l'écran
+let io;
+function observe() {
+  if (io) io.disconnect();
+  const cats = menuEl.querySelectorAll(".cat");
+  if (reduce || !("IntersectionObserver" in window)) { cats.forEach(c => c.classList.add("in")); return; }
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+  cats.forEach(c => io.observe(c));
+}
+
+// La pastille active suit la catégorie lue ; seule la barre défile, jamais la page
+let current = "", ticking = false;
+function onScroll() {
+  ticking = false;
+  document.getElementById("top").classList.toggle("show", scrollY > 600);
+  const secs = menuEl.querySelectorAll(".cat:not([hidden])");
+  let id = secs[0]?.id;
+  secs.forEach(s => { if (s.getBoundingClientRect().top < 140) id = s.id; });
+  if (id === current) return;
+  current = id;
+  chipsRow.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.c === id));
+  const on = chipsRow.querySelector("a.on"); if (!on) return;
+  const left = on.getBoundingClientRect().left - chipsRow.getBoundingClientRect().left + chipsRow.scrollLeft - (chipsRow.clientWidth - on.offsetWidth) / 2;
+  chipsRow.scrollTo({ left, behavior: reduce ? "auto" : "smooth" });
+}
+addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+
+function goTo(s) { scrollTo({ top: s.getBoundingClientRect().top + scrollY - 64, behavior: reduce ? "auto" : "smooth" }); }
+chipsRow.addEventListener("click", e => { const a = e.target.closest("a[data-c]"); if (!a) return; e.preventDefault(); goTo(document.getElementById(a.dataset.c)); });
+document.getElementById("top").addEventListener("click", e => { e.preventDefault(); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+
+// Ouvert ou fermé en ce moment (heure d'Alger)
+function status() {
+  const t = T[lang], el = document.getElementById("status"), txt = document.getElementById("status-t");
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "Africa/Algiers", weekday: "short", hour: "numeric", minute: "numeric", hour12: false }).formatToParts(new Date());
+    const get = k => parts.find(p => p.type === k).value;
+    const fri = get("weekday") === "Fri", h = +get("hour") % 24 + +get("minute") / 60;
+    const o = fri ? 18 : 11, c = fri ? 22 : 23, isOpen = h >= o && h < c;
+    el.classList.toggle("closed", !isOpen);
+    txt.textContent = `${isOpen ? t.open : t.closed} ${(isOpen ? c : (h >= c ? (get("weekday") === "Thu" ? 18 : 11) : o))}h00`;
+  } catch (e) { txt.textContent = t.hoursShort; }
+}
+
+document.getElementById("lang").addEventListener("click", () => {
+  const keep = current;
+  lang = lang === "fr" ? "ar" : "fr";
+  try { localStorage.setItem("s100-lang", lang); } catch (e) {}
+  render();
+  if (keep && scrollY > 200) { const s = document.getElementById(keep); s && scrollTo({ top: s.getBoundingClientRect().top + scrollY - 64 }); }
+});
+render();
+</script>
+</body>
+</html>
