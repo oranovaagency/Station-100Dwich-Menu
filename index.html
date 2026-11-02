@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Station 100Dwich · Menu</title>
-<meta name="description" content="Le menu du restaurant pizzeria Station 100Dwich à Oran : pizzas, tacos, burgers, sandwichs, poutines, plats orientaux, boissons et desserts.">
+<title>Station 100Dwich · La Carte</title>
+<meta name="description" content="La carte du restaurant pizzeria Station 100Dwich à Oran : pizzas, tacos, burgers, sandwichs, poutines, plats orientaux, boissons et desserts.">
 <meta name="theme-color" content="#0b0b0d">
-<meta property="og:title" content="Station 100Dwich · Menu">
+<meta property="og:title" content="Station 100Dwich · La Carte">
 <meta property="og:description" content="Pizzas, tacos, burgers, sandwichs, poutines et plats orientaux. Rond-point de la Wilaya, Oran.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
@@ -104,8 +104,10 @@
   .banner .n { font: 400 18px/1 var(--display); color: var(--yellow); letter-spacing: .1em; }
   .banner h2 { font: 400 40px/1 var(--display); letter-spacing: .03em; margin-top: 4px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
   [dir="rtl"] .banner h2 { font-size: 30px; font-weight: 700; line-height: 1.35; letter-spacing: 0; }
-  .banner p { color: var(--muted); font-size: 15px; margin-top: 2px; }
   .panel { background: rgba(11,11,13,.9); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 10px 10px; padding: 6px 18px 14px; }
+  .panel .lede { padding: 12px 0 4px; font: 600 19px/1.35 var(--text); color: var(--cream); }
+  [dir="rtl"] .panel .lede { font-weight: 700; font-size: 20px; }
+  .panel .lede .hl { color: var(--yellow); }
   .sub-h { display: flex; align-items: center; gap: 10px; margin: 16px 0 4px; font: 600 11px/1 var(--text); letter-spacing: .3em; text-transform: uppercase; color: var(--yellow); }
   .sub-h::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   [dir="rtl"] .sub-h { letter-spacing: 0; font-size: 14px; }
@@ -183,7 +185,7 @@
   <button class="lang" id="lang" type="button">عربي</button>
   <div class="dot" aria-hidden="true">100</div>
   <p class="eyebrow" data-i="eyebrow">Restaurant · Pizzeria · Oran</p>
-  <h1><span class="name">Station 100Dwich</span><span class="title" data-i="title">Menu</span></h1>
+  <h1><span class="name">Station 100Dwich</span><span class="title" data-i="title">La Carte</span></h1>
   <div class="rule" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2.2 5.8L16 8l-5.8 2.2L8 16l-2.2-5.8L0 8l5.8-2.2z"/></svg></div>
   <p class="status" id="status"><i aria-hidden="true"></i><span id="status-t" data-i="hoursShort">Tous les jours 11h – 23h · vendredi 18h – 22h</span></p>
 </header>
@@ -205,7 +207,7 @@
     <a href="https://www.tiktok.com/@foodstationby100dwich" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.19 1.11 2.87 1.62 4.51 1.8v4.03c-1.53-.05-3.08-.37-4.47-1.03-.6-.27-1.17-.63-1.72-.99-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</a>
   </div>
   <p class="note" data-i="note">Prix en dinars algériens (DA), susceptibles de changer.</p>
-  <div class="credit" dir="ltr"><span data-i="credit">Designed by</span><a href="https://oranovaagency.github.io/Oranova-Links/" target="_blank" rel="noopener" aria-label="Oranova" style="display:inline-flex"><img src="img/oranova-logo-light.png" alt="Oranova" width="2000" height="426"></a></div>
+  <p class="credit in" style="--i:14" translate="no" dir="ltr"><span>Designed by <a href="https://oranovaagency.github.io/Oranova-Links/" target="_blank" rel="noopener" aria-label="Oranova" style="display:inline-flex"><img src="img/oranova-logo-light.png" width="520" height="96" alt="Oranova" loading="lazy"></a></span></p>
 </footer>
 
 <a class="top" id="top" href="#" aria-label="Retour en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
@@ -290,7 +292,7 @@ const MENU = [
         ["Australienne", "أسترالية", [1000, 2100, 2900], "Tomate, fromage, viande hachée, champignons, thon, olives", "طماطم، جبن، لحم مفروم، فطر، تونة، زيتون"],
         ["Maison", "بيتزا الدار", [1500, 3200, 4500], "Tomate, fromage, fruits de mer, thon, anchois, champignons, bordure fromage, olives", "طماطم، جبن، فواكه البحر، تونة، أنشوجة، فطر، حافة بالجبن، زيتون"],
         ["Festivale", "فيستيفال", [1600, 3500, 4500], "Tomate, fromage, olives vertes, viande hachée, poulet, champignons, thon, câpres, bordure fromage", "طماطم، جبن، زيتون أخضر، لحم مفروم، دجاج، فطر، تونة، كبار، حافة بالجبن"],
-        ["Fruits de mer", "فواكه البحر", 1600, "Tomate, fromage, calamar, crevettes, olives, 1 crevette royale. Taille M uniquement", "طماطم، جبن، كالامار، قمرون، زيتون، قمرون ملكي. حجم M فقط"]] },
+        ["Fruits de mer", "فواكه البحر", 1800, "Tomate, fromage, calamar, crevettes, olives, 1 crevette royale. Taille M uniquement", "طماطم، جبن، كالامار، قمرون، زيتون، قمرون ملكي. حجم M فقط"]] },
       { fr: "Spéciales", ar: "سبيسيال", sizes: ["M", "XL", "XXL"], sizesAr: ["M", "XL", "XXL"], items: [
         ["Pepperoni", "بيبروني", [850, 1800, 2500], "Sauce tomate, fromage, pepperoni, olives", "صلصة طماطم، جبن، بيبروني، زيتون"],
         ["Roma", "روما", [900, 1900, 2800], "Sauce tomate, fromage, anchois, câpres, olives", "صلصة طماطم، جبن، أنشوجة، كبار، زيتون"],
@@ -328,7 +330,7 @@ const MENU = [
 ];
 
 const T = {
-  fr: { eyebrow: "Restaurant · Pizzeria · Oran", title: "Menu", call: "Appeler", map: "Itinéraire", find: "Nous trouver", addr: "Rond-point de la Wilaya, Oran",
+  fr: { eyebrow: "Restaurant · Pizzeria · Oran", title: "La Carte", call: "Appeler", map: "Itinéraire", find: "Nous trouver", addr: "Rond-point de la Wilaya, Oran",
         d1: "Samedi à jeudi", d2: "Vendredi", note: "Prix en dinars algériens (DA), susceptibles de changer.", credit: "Designed by",
         search: "Rechercher un plat…", empty: "Aucun plat ne correspond à votre recherche.", cur: "DA", langBtn: "عربي", langLabel: "التبديل إلى العربية",
         hoursShort: "Tous les jours 11h – 23h · vendredi 18h – 22h", open: "Ouvert · ferme à", closed: "Fermé · ouvre à", results: n => n + (n > 1 ? " plats trouvés" : " plat trouvé"),
@@ -362,8 +364,8 @@ function render() {
   menuEl.innerHTML = MENU.map((c, i) => `
     <section class="cat" id="${c.id}">
       <div class="banner"><img src="img/${c.img}.jpg" alt="" ${i ? 'loading="lazy"' : 'fetchpriority="high"'}>
-        <div class="t"><span class="n" dir="ltr">${roman[i]}.</span><h2>${c[lang]}</h2><p>${lang === "ar" ? c.subAr : c.subFr}</p></div></div>
-      <div class="panel">${c.groups.map(g => {
+        <div class="t"><span class="n" dir="ltr">${roman[i]}.</span><h2>${c[lang]}</h2></div></div>
+      <div class="panel"><p class="lede">${(lang === "ar" ? c.subAr : c.subFr).replace(/^(Formule|فورمول)/, '<span class="hl">$1</span>')}</p>${c.groups.map(g => {
         const sizes = lang === "ar" ? g.sizesAr : g.sizes;
         return `${g[lang] ? `<p class="sub-h">${g[lang]}</p>` : ""}${sizes ? `<div class="sizes" dir="ltr">${sizes.map(s => `<span>${s}</span>`).join("")}</div>` : ""}<ul class="items">${g.items.map(([nfr, nar, p, dfr, dar, badge], j) => {
           const n = lang === "ar" ? nar : nfr, d = lang === "ar" ? dar : dfr;
